@@ -42,7 +42,7 @@ function _M.run(conf)
     end
 
     local data = cjson.decode(res.body)
-    ngx.req.set_header("X-Credential-User-Id", data["sub"])
+    ngx.req.set_header("X-Credential-Sub", data["sub"])
     ngx.req.set_header("X-Credential-Scope", data["scope"])
     -- clear token header from req
     ngx.req.clear_header(conf.token_header)
