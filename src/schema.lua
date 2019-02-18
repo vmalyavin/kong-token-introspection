@@ -16,6 +16,6 @@ return {
         introspection_endpoint = { type = "url", required = true, func = validate_url },
         token_header = { type = "string", required = true, default = { "Authorization" } },
         token_cache_time = { type = "number", required = true, default = 0 },
-        -- scope = { type = "string", default = "" } -- TODO: scope control
+        scope = { type = "string", default = "" }
     }
 }

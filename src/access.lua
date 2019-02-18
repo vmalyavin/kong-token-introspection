@@ -42,9 +42,25 @@ function _M.introspect_access_token(access_token)
     return _M.introspect_access_token_req(access_token)
 end
 
--- TODO: scope-control
+function _M.is_scope_authorized(scope)
+    if _M.conf.scope == nil then
+        return true
+    end
+    local needed_scope = pl_stringx.strip(_M.conf.scope)
+    if string.len(needed_scope) == 0 then
+        return true
+    end
+    scope = pl_stringx.strip(scope)
+    if string.find(scope, '*', 1, true) or string.find(scope, needed_scope, 1, true) then
+        return true
+    end
+
+    return false
+end
+
+
 function _M.run(conf)
-    _M.conf = conf;
+    _M.conf = conf
     local access_token = ngx.req.get_headers()[_M.conf.token_header]
     if not access_token then
         _M.error_response("Unauthenticated.", ngx.HTTP_UNAUTHORIZED)
@@ -59,8 +75,14 @@ function _M.run(conf)
     if res.status ~= 200 then
         _M.error_response("The resource owner or authorization server denied the request.", ngx.HTTP_UNAUTHORIZED)
     end
-
     local data = cjson.decode(res.body)
+    if data["active"] ~= true then
+        _M.error_response("The resource owner or authorization server denied the request.", ngx.HTTP_UNAUTHORIZED)
+    end
+    if not _M.is_scope_authorized(data["scope"]) then
+        _M.error_response("Forbidden", ngx.HTTP_FORBIDDEN)
+    end
+
     ngx.req.set_header("X-Credential-Sub", data["sub"])
     ngx.req.set_header("X-Credential-Scope", data["scope"])
     -- clear token header from req
