@@ -58,7 +58,7 @@ function _M.is_scope_authorized(scope)
     return false
 end
 
-
+ -- TODO: plugin config that will allow not authorized queries
 function _M.run(conf)
     _M.conf = conf
     local access_token = ngx.req.get_headers()[_M.conf.token_header]
