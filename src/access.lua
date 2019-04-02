@@ -31,7 +31,8 @@ end
 
 function _M.introspect_access_token(access_token)
     if _M.conf.token_cache_time > 0 then
-        local res, err = kong.cache:get("at:" .. access_token, { ttl = _M.conf.token_cache_time },
+        local cache_id = "at:" .. access_token
+        local res, err = kong.cache:get(cache_id, { ttl = _M.conf.token_cache_time },
                 _M.introspect_access_token_req, access_token)
         if err then
             _M.error_response("Unexpected error: " .. err, ngx.HTTP_INTERNAL_SERVER_ERROR)
