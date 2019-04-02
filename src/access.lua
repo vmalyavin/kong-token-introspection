@@ -36,6 +36,12 @@ function _M.introspect_access_token(access_token)
         if err then
             _M.error_response("Unexpected error: " .. err, ngx.HTTP_INTERNAL_SERVER_ERROR)
         end
+        -- not 200 response status isn't valid for normal caching
+        -- TODO:optimisation
+        if res.status ~= 200 then
+            kong.cache:invalidate(cache_id)
+        end
+
         return res
     end
 
@@ -57,7 +63,6 @@ function _M.is_scope_authorized(scope)
 
     return false
 end
-
 
 function _M.run(conf)
     _M.conf = conf
