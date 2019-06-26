@@ -1,4 +1,4 @@
-package = "kong-token-introspection"
+package = "access-token-introspection"
 version = "1.0.0-0"
 source = {
    url = "git+https://github.com/VentaApps/kong-token-introspection.git"
