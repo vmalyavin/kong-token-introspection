@@ -1,3 +1,12 @@
+return {
+    fields = {
+        introspection_endpoint = { type = "string", required = true },
+        token_header = { type = "string", required = true, default = { "Authorization" } },
+        token_cache_time = { type = "number", required = true, default = 0 },
+        scope = { type = "string", default = "" }
+    }
+}
+
 -- local url = require "socket.url"
 -- local function validate_url(value)
 --     local parsed_url = url.parse(value)
@@ -10,13 +19,3 @@
 
 --     return true
 -- end
-
-return {
-    name = "access-token-introspection",
-    fields = {
-        introspection_endpoint = { type = "string", required = true },
-        token_header = { type = "string", required = true, default = { "Authorization" } },
-        token_cache_time = { type = "number", required = true, default = 0 },
-        scope = { type = "string", default = "" }
-    }
-}
