@@ -12,6 +12,7 @@
 -- end
 
 return {
+    name = "access-token-introspection",
     fields = {
         introspection_endpoint = { type = "string", required = true },
         token_header = { type = "string", required = true, default = { "Authorization" } },
