@@ -14,8 +14,8 @@ Plugin is protecting Kong API service/route with introspection of Oauth2.0 JWT a
 build = {
    type = "builtin",
    modules = {
-      ["kong.plugins.kong-token-introspection.access"] = "kong/plugins/kong-token-introspection/access.lua",
-      ["kong.plugins.kong-token-introspection.handler"] = "kong/plugins/kong-token-introspection/handler.lua",
-      ["kong.plugins.kong-token-introspection.schema"] = "kong/plugins/kong-token-introspection/schema.lua"
+      ["kong.plugins.access-token-introspection.access"] = "kong/plugins/access-token-introspection/access.lua",
+      ["kong.plugins.access-token-introspection.handler"] = "kong/plugins/access-token-introspection/handler.lua",
+      ["kong.plugins.access-token-introspection.schema"] = "kong/plugins/access-token-introspection/schema.lua"
    }
 }
