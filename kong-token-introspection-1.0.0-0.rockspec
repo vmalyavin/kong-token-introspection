@@ -9,7 +9,7 @@ description = {
 # How it works
 Plugin is protecting Kong API service/route with introspection of Oauth2.0 JWT access-token, added to request header. Plugin does a pre-request to oauth introspection endpoint([RFC7662](https://tools.ietf.org/html/rfc7662#section-2)).]],
    homepage = "https://github.com/VentaApps/kong-token-introspection",
-   license = "*** please specify a license ***"
+   license = "MIT"
 }
 build = {
    type = "builtin",
