@@ -14,6 +14,8 @@ end
 return {
     no_consumer = true, -- this plugin will only be API-wide
     fields = {
+        client_id = { type = "string", required = true },
+        client_secret = { type = "string", required = true },
         introspection_endpoint = { type = "url", required = true, func = validate_url },
         token_header = { type = "string", required = true, default = "Authorization" },
         token_cache_time = { type = "number", required = true, default = 0 },
