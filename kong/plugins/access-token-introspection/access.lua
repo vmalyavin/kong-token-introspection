@@ -4,11 +4,6 @@ local pl_stringx = require "pl.stringx"
 local cjson = require "cjson.safe"
 
 
-_M.conf.introspection_endpoint = ''
-_M.conf.token_cache_time = 60
-_M.conf.scope = nil
-_M.conf.token_header = 'Authorization'
-
 function _M.error_response(message, status)
     local jsonStr = '{"data":[],"error":{"code":' .. status .. ',"message":"' .. message .. '"}}'
     ngx.header['Content-Type'] = 'application/json'
