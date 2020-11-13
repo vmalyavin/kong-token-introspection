@@ -13,11 +13,12 @@ end
 
 function _M.introspect_access_token_req(access_token)
     local httpc = http:new()
+
     local res, err = httpc:request_uri(_M.conf.introspection_endpoint, {
         method = "POST",
         ssl_verify = false,
         body = "token_type_hint=access_token&token=" .. access_token,
-        headers = { ["Content-Type"] = "application/x-www-form-urlencoded", }
+        headers = { ["Content-Type"] = "application/x-www-form-urlencoded" }
     })
 
     if not res then
