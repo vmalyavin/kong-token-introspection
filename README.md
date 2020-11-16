@@ -12,5 +12,6 @@ Plugin is protecting Kong API service/route with introspection of Oauth2.0 JWT a
 | --- 						| --- | --- |
 | `config.introspection_endpoint`   | | External introspection endpoint compatible with RFC7662 |
 | `config.token_header`             | Authorization | Name of api-request header containing access token |
+| `config.require_success`             | true | Require a successful introspection before proxying the request, if false `token_header` existance will not be required |
 | `config.token_cache_time`             | 0 | Cache TTL for every token introspection result(0 - no cache) |
-| `config.introspection_map`             |  | External introspection response `body` and `headers` mapped to request headers |
+| `config.introspection_map`             |  | External introspection response `body` and `headers` mapped to request headers, also `static` for fixed strings |

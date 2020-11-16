@@ -27,17 +27,21 @@ function _M.introspect_access_token_req(access_token)
     if not res then
         return { status = 0 }
     end
-    if res.status ~= 200 then
-        return { status = res.status }
-    end
-    return { status = res.status, body = cjson.decode(res.body), headers = res.headers }
+
+    return {
+        status = res.status,
+        body = cjson.decode(res.body),
+        headers = res.headers
+    }
 end
 
 function _M.introspect_access_token(access_token)
     if _M.conf.token_cache_time > 0 then
         local cache_id = "at:" .. access_token
-        local res, err = kong.cache:get(cache_id, { ttl = _M.conf.token_cache_time },
-                _M.introspect_access_token_req, access_token)
+        local res, err = kong.cache:get(cache_id,
+                                        {ttl = _M.conf.token_cache_time},
+                                        _M.introspect_access_token_req,
+                                        access_token)
         if err then
             _M.error_response("Unexpected error: " .. err, ngx.HTTP_INTERNAL_SERVER_ERROR)
         end
@@ -56,9 +60,14 @@ end
 function _M.run(conf)
     _M.conf = conf
     local access_token = ngx.req.get_headers()[_M.conf.token_header]
+    if not _M.conf.require_success and access_token == nil then
+        return
+    end
+
     if not access_token then
         _M.error_response("Unauthenticated.", ngx.HTTP_UNAUTHORIZED)
     end
+
     -- replace Bearer prefix
     access_token = pl_stringx.replace(access_token, "Bearer ", "", 1)
 
@@ -66,7 +75,8 @@ function _M.run(conf)
     if not res then
         _M.error_response("Authorization server error.", ngx.HTTP_INTERNAL_SERVER_ERROR)
     end
-    if res.status ~= 200 then
+
+    if _M.conf.require_success and res.status ~= 200 then
         _M.error_response("The resource owner or authorization server denied the request.", ngx.HTTP_UNAUTHORIZED)
     end
 
@@ -77,6 +87,11 @@ function _M.run(conf)
     for k, v in pairs(_M.conf.introspection_map.body) do
         ngx.req.set_header(k, res.body[v])
     end
+
+    for k, v in pairs(_M.conf.introspection_map.static) do
+        ngx.req.set_header(k, v)
+    end
+
     -- clear token header from req
     ngx.req.clear_header(_M.conf.token_header)
 end

@@ -42,6 +42,13 @@ return {
                         }
                     },
                     {
+                        require_success = {
+                            type = "boolean",
+                            required = false,
+                            default = true
+                        }
+                    },
+                    {
                         token_cache_time = {
                             type = "number",
                             required = true,
@@ -52,7 +59,9 @@ return {
                             type = "record",
                             required = false,
                             fields = {
-                                {body = string_map}, {headers = string_map}
+                                {body = string_map},
+                                {headers = string_map},
+                                {static = string_map},
                             }
                         }
                     }
