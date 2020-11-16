@@ -18,7 +18,10 @@ function _M.introspect_access_token_req(access_token)
         method = "POST",
         ssl_verify = false,
         body = "token_type_hint=access_token&token=" .. access_token,
-        headers = { ["Content-Type"] = "application/x-www-form-urlencoded" }
+        headers = {
+            ["Content-Type"] = "application/x-www-form-urlencoded",
+            ["Authorization"] = "Bearer " .. access_token
+        }
     })
 
     if not res then
@@ -27,7 +30,7 @@ function _M.introspect_access_token_req(access_token)
     if res.status ~= 200 then
         return { status = res.status }
     end
-    return { status = res.status, body = res.body }
+    return { status = res.status, body = cjson.decode(res.body), headers = res.headers }
 end
 
 function _M.introspect_access_token(access_token)
@@ -50,23 +53,6 @@ function _M.introspect_access_token(access_token)
     return _M.introspect_access_token_req(access_token)
 end
 
-function _M.is_scope_authorized(scope)
-    if _M.conf.scope == nil then
-        return true
-    end
-    local needed_scope = pl_stringx.strip(_M.conf.scope)
-    if string.len(needed_scope) == 0 then
-        return true
-    end
-    scope = pl_stringx.strip(scope)
-    if string.find(scope, '*', 1, true) or string.find(scope, needed_scope, 1, true) then
-        return true
-    end
-
-    return false
-end
-
- -- TODO: plugin config that will allow not authorized queries
 function _M.run(conf)
     _M.conf = conf
     local access_token = ngx.req.get_headers()[_M.conf.token_header]
@@ -83,16 +69,14 @@ function _M.run(conf)
     if res.status ~= 200 then
         _M.error_response("The resource owner or authorization server denied the request.", ngx.HTTP_UNAUTHORIZED)
     end
-    local data = cjson.decode(res.body)
-    if data["active"] ~= true then
-        _M.error_response("The resource owner or authorization server denied the request.", ngx.HTTP_UNAUTHORIZED)
-    end
-    if not _M.is_scope_authorized(data["scope"]) then
-        _M.error_response("Forbidden", ngx.HTTP_FORBIDDEN)
+
+    for k, v in pairs(_M.conf.introspection_map.headers) do
+        ngx.req.set_header(k, res.headers[v])
     end
 
-    ngx.req.set_header("X-Credential-Sub", data["sub"])
-    ngx.req.set_header("X-Credential-Scope", data["scope"])
+    for k, v in pairs(_M.conf.introspection_map.body) do
+        ngx.req.set_header(k, res.body[v])
+    end
     -- clear token header from req
     ngx.req.clear_header(_M.conf.token_header)
 end
