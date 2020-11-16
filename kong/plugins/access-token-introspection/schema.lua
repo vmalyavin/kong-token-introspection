@@ -35,6 +35,18 @@ return {
                         }
                     },
                     {
+                        client_id = {
+                            type = "string",
+                            required = true,
+                        }
+                    },
+                    {
+                        client_secret = {
+                            type = "string",
+                            required = true,
+                        }
+                    },
+                    {
                         token_header = {
                             type = "string",
                             required = true,
