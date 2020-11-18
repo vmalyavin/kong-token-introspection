@@ -1,5 +1,6 @@
 local url = require "socket.url"
 local typedefs = require "kong.db.schema.typedefs"
+
 local function validate_url(value)
     local parsed_url = url.parse(value)
     if parsed_url.scheme and parsed_url.host then
@@ -51,6 +52,13 @@ return {
                             type = "string",
                             required = true,
                             default = "Authorization"
+                        }
+                    },
+                    {
+                        token_query = {
+                            type = "string",
+                            required = true,
+                            default = "token"
                         }
                     },
                     {

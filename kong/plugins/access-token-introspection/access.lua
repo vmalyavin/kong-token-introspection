@@ -19,7 +19,7 @@ function _M.introspect_access_token_req(access_token)
         ssl_verify = false,
         body = "token=" .. access_token .. "&client_id=" .. _M.conf.client_id .. "&client_secret=" .. _M.conf.client_secret,
         headers = {
-            ["Content-Type"] = "application/x-www-form-urlencoded",
+            ["Content-Type"] = "application/x-www-form-urlencoded"
         }
     })
 
@@ -58,7 +58,13 @@ end
 
 function _M.run(conf)
     _M.conf = conf
+
+    -- access_token could be got from the Header or the query parameter
     local access_token = ngx.req.get_headers()[_M.conf.token_header]
+    if not access_token then
+        access_token = ngx.req.get_uri_args()[_M.conf.token_query]
+    end
+
     if not _M.conf.require_success and access_token == nil then
         return
     end
