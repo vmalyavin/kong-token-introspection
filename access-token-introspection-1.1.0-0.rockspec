@@ -7,7 +7,7 @@ source = {
 }
 
 description = {
-  summary = "A Kong plugin, that let you use an external Oauth 2.0 provider to protect your API",
+  summary = "A Kong plugin, that let you use an external Oauth 2.0 provider to protect your API.",
   license = "MIT"
 }
 
