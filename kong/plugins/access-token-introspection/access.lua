@@ -24,7 +24,7 @@ function _M.introspect_access_token_req(access_token)
     })
 
     if not res then
-        return { status = 0 }
+        return nil
     end
 
     return {
@@ -45,8 +45,7 @@ function _M.introspect_access_token(access_token)
             _M.error_response("Unexpected error: " .. err, ngx.HTTP_INTERNAL_SERVER_ERROR)
         end
         -- not 200 response status isn't valid for normal caching
-        -- TODO:optimisation
-        if res.status ~= 200 then
+        if not res or res.status ~= 200 then
             kong.cache:invalidate(cache_id)
         end
 
@@ -81,7 +80,7 @@ function _M.run(conf)
         _M.error_response("Authorization server error.", ngx.HTTP_INTERNAL_SERVER_ERROR)
     end
 
-    if _M.conf.require_success and res.status ~= 200 then
+    if _M.conf.require_success and (res.status ~= 200 or res.body["active"] ~= true) then
         _M.error_response("The resource owner or authorization server denied the request.", ngx.HTTP_UNAUTHORIZED)
     end
 
