@@ -1,0 +1,28 @@
+version: 2.1
+
+jobs:
+  test:
+    machine:
+        image: ubuntu-2004:202010-01
+        docker_layer_caching: true
+    steps:
+      - checkout
+      - run:
+          name: Install pongo
+          command: |
+            git clone --single-branch https://github.com/Kong/kong-pongo ../kong-pongo
+            ../kong-pongo/pongo.sh up
+            ../kong-pongo/pongo.sh build
+      - run:
+          name: Lint
+          command: |
+            ../kong-pongo/pongo.sh lint
+      - run:
+          name: Test
+          command: |
+            ../kong-pongo/pongo.sh run
+
+workflows:
+  test:
+    jobs:
+      - test

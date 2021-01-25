@@ -3,12 +3,12 @@ local typedefs = require "kong.db.schema.typedefs"
 
 local function validate_url(value)
     local parsed_url = url.parse(value)
-    if parsed_url.scheme and parsed_url.host then
-        parsed_url.scheme = parsed_url.scheme:lower()
-        if not (parsed_url.scheme == "http" or parsed_url.scheme == "https") then
-            return false, "Supported protocols are HTTP and HTTPS"
-        end
+    if parsed_url.scheme == nil or parsed_url.host == nil then
+        return nil, "Invalid URL"
     end
+
+    if not (parsed_url.scheme:lower() == "http" or parsed_url.scheme:lower() ==
+        "https") then return nil, "Supported protocols are HTTP and HTTPS" end
 
     return true
 end

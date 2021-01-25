@@ -14,7 +14,7 @@ end
 function _M.introspect_access_token_req(access_token)
     local httpc = http:new()
 
-    local res, err = httpc:request_uri(_M.conf.introspection_endpoint, {
+    local res, _ = httpc:request_uri(_M.conf.introspection_endpoint, {
         method = "POST",
         ssl_verify = false,
         body = "token=" .. access_token .. "&client_id=" .. _M.conf.client_id .. "&client_secret=" .. _M.conf.client_secret,
