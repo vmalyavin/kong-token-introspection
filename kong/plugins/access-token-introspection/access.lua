@@ -97,7 +97,9 @@ function _M.run(conf)
     end
 
     -- clear token header from req
-    ngx.req.clear_header(_M.conf.token_header)
+    if not _M.conf.keep_token_header then
+        ngx.req.clear_header(_M.conf.token_header)
+    end
 end
 
 return _M

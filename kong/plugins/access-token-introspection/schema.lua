@@ -55,6 +55,13 @@ return {
                         }
                     },
                     {
+                        keep_token_header = {
+                            type = "boolean",
+                            required = false,
+                            default = false
+                        }
+                    },
+                    {
                         token_query = {
                             type = "string",
                             required = true,
