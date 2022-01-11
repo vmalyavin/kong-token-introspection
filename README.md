@@ -28,3 +28,5 @@ Plugin is protecting Kong API service/route with introspection of Oauth2.0 JWT a
 **1.1.1** `luarocks install https://raw.githubusercontent.com/medwing/kong-token-introspection/v1.1.1/access-token-introspection-1.1.1-0.rockspec`
 
 **1.2.0** `luarocks install https://raw.githubusercontent.com/medwing/kong-token-introspection/v1.2.0/access-token-introspection-1.2.0-0.rockspec`
+
+**1.2.1** `luarocks install https://raw.githubusercontent.com/medwing/kong-token-introspection/v1.2.1/access-token-introspection-1.2.1-0.rockspec`
