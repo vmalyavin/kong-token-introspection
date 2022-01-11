@@ -2,7 +2,7 @@ package = "access-token-introspection"
 version = "1.2.1-0"
 
 source = {
-  url = "https://github.com/medwing/kong-token-introspection",
+  url = "git+https://github.com/medwing/kong-token-introspection.git",
   tag = "v1.2.1"
 }
 
