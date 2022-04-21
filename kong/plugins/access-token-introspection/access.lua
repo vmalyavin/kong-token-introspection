@@ -81,7 +81,7 @@ function _M.run(conf)
     end
 
     if _M.conf.require_success and (res.status ~= 200 or res.body["active"] ~= true) then
-        _M.error_response("The resource owner or authorization server denied the request.", ngx.HTTP_UNAUTHORIZED)
+        _M.error_response("The resource owner or authorization server denied the request.", res.status)
     end
 
     for k, v in pairs(_M.conf.introspection_map.headers) do
